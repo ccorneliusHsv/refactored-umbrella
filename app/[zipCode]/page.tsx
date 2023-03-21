@@ -31,9 +31,9 @@ export default async function Forecast({params} : Props) {
     return (
         <div>
             {results.properties.periods.map((period) => (
-                <div key={period.number}>
-                    <h1>{period.detailedForecast}</h1>
-                </div>
+                <ForecastCard
+                    key={"ForeCastCard-" + period.number}
+                    period={period}></ForecastCard>
             ))}
         </div>
     )
