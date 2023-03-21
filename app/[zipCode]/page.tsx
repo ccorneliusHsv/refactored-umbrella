@@ -23,7 +23,7 @@ export default async function Forecast({params} : Props) {
     //Fetch the grid points from the lat lon
     const gridResponse = await fetch(`https://api.weather.gov/points/${finalZipInfo.lat},${finalZipInfo.long}`);
     const grJson = await gridResponse.json();
-    console.log(grJson);
+    //console.log(grJson);
 
     const data = await fetch(grJson.properties.forecast);
     const results = await data.json() as ForecastReturn;
