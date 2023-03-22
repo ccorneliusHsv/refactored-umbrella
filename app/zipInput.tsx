@@ -6,7 +6,7 @@ import {useRouter} from "next/navigation";
 export default function ZipInput() {
     const [zipCode, setZipcode] = useState("");
     const router = useRouter();
-    
+
     return (
         <div>
             <label> Enter Zip Code</label>
