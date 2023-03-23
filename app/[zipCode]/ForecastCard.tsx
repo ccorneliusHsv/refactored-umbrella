@@ -8,6 +8,7 @@ type Props = {
 export default function ForecastCard( props: Props ) {
     return (
         <div key={props.period.number}>
+            <h4>{"Start time = " + props.period.startTime + "  End Time = " + props.period.endTime}</h4>
             <h4>{props.period.detailedForecast}</h4>
         </div>
     )
