@@ -7,7 +7,6 @@ type Props = {
 }
 
 export default function Forecast({results}: Props) {
-    
     return (
         <div>
             {results.properties.periods.map((period) => (
@@ -62,7 +61,6 @@ export async function getStaticProps({params}: { params: { zipCode: string } }) 
     const gridResponse = await fetch(`https://api.weather.gov/points/${finalZipInfo.lat},${finalZipInfo.long}`);
     const grJson = await gridResponse.json();
 
-    //TODO How to validate this cache timing??
     const data = await fetch(grJson.properties.forecast, {next: {revalidate: 3600}});
     const results = await data.json() as ForecastReturn;
 
