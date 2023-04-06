@@ -26,7 +26,7 @@ export default function ZipInput() {
             <input
                 type={"submit"}
                 onClick={() => {
-                    router.push("/" + zipCode)
+                    router.push("/zipcode/" + zipCode)
                 }}
             >
             </input>
