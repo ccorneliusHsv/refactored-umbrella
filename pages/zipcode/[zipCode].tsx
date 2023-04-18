@@ -19,30 +19,7 @@ export default function Forecast({results}: Props) {
     )
 }
 
-
-// Get Static Paths allows the server to know all of the possible routes to create at build time
-export async function getStaticPaths() {
-
-    // Call an external API endpoint to get posts
-    //const res = await fetch('https://.../posts')
-    //const posts = await res.json()
-
-    // Get the paths we want to pre-render based on posts
-    //const paths = posts.map((post) => ({
-    //   params: { id: post.id },
-    //}))
-
-    const paths = zipCodes.zip.map((zipCode) => ({
-            params: {zipCode: zipCode.id},
-        })
-    )
-
-    // We'll pre-render only these paths at build time.
-    // { fallback: false } means other routes should 404.
-    return {paths, fallback: false}
-}
-
-export async function getStaticProps({params}: { params: { zipCode: string } }) {
+export async function getServerSideProps({params}: { params: { zipCode: string } }) {
     // params contains the post `id`.
     // If the route is like /posts/1, then params.id is 1
     //const res = await fetch(`https://.../posts/${params.id}`)
@@ -53,13 +30,19 @@ export async function getStaticProps({params}: { params: { zipCode: string } }) 
     })
 
     if (!finalZipInfo) {
-        //Throw Error
-        throw new Error("That Zip Code was not available for a forecast!")
+        return {
+            notFound: true,
+        }
     }
 
     //Fetch the grid points from the lat lon
     const gridResponse = await fetch(`https://api.weather.gov/points/${finalZipInfo.lat},${finalZipInfo.long}`);
     const grJson = await gridResponse.json();
+    if(!grJson.properties?.forecast){
+        return {
+            notFound: true,
+        }
+    }
 
     const data = await fetch(grJson.properties.forecast, {next: {revalidate: 3600}});
     const results = await data.json() as ForecastReturn;
